@@ -3,13 +3,7 @@ class TareasProvider {
 
   static final TareasProvider _instancia = TareasProvider._privado();
   TareasProvider._privado() {
-    _tareas = [
-      {
-        'nombre': 'Tarea 1',
-        'descripcion': 'Descripcion de la tarea 1',
-        'estado': false,
-      },
-    ];
+    _tareas = [];
   }
 
   factory TareasProvider() {
