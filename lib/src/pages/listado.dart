@@ -1,24 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:planeador_app/src/pages/detalle.dart';
 import 'package:planeador_app/src/pages/formulario.dart';
 
 import '../providers/tareas_provider.dart';
 
-class ListadoPage extends StatelessWidget {
+class ListadoPage extends StatefulWidget {
   const ListadoPage({super.key});
 
   static const nombrePagina = "listado";
-  static final List<Map<String, dynamic>> tareas = [
-    {
-      'nombre': 'Tarea 1',
-      'descripcion': 'Descripcion de la tarea 1',
-      'estado': false,
-    },
-    {
-      'nombre': 'Tarea 2',
-      'descripcion': 'Descripcion de la tarea 2',
-      'estado': true,
-    },
-  ];
+  static final List<Map<String, dynamic>> tareas = [];
+
+  @override
+  State<ListadoPage> createState() => _ListadoPageState();
+}
+
+class _ListadoPageState extends State<ListadoPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,7 +23,7 @@ class ListadoPage extends StatelessWidget {
       ),
       body: (TareasProvider().tareas.isNotEmpty)
           ? ListView(
-              children: _crearItem(),
+              children: _crearItem(context),
             )
           : const Center(
               child: Text('No hay tareas agregadas'),
@@ -40,10 +36,12 @@ class ListadoPage extends StatelessWidget {
     );
   }
 
-  List<Widget> _crearItem() {
+  List<Widget> _crearItem(BuildContext context) {
     List<Widget> temporal = [];
     for (Map<String, dynamic> tarea in TareasProvider().tareas) {
       Widget item = ListTile(
+        onTap: () => Navigator.pushNamed(context, DetallePage.nombrePagina,
+            arguments: tarea),
         title: Text('${tarea['nombre']}'),
         trailing: (tarea['estado'])
             ? const Icon(Icons.star)

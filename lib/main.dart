@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:planeador_app/src/pages/detalle.dart';
 import 'package:planeador_app/src/pages/formulario.dart';
 import 'package:planeador_app/src/pages/listado.dart';
 
@@ -16,6 +17,8 @@ class MyApp extends StatelessWidget {
               const ListadoPage(),
           FormularioPage.nombrePagina: (BuildContext context) =>
               const FormularioPage(),
+          DetallePage.nombrePagina: (BuildContext context) =>
+              const DetallePage(),
         },
         home: const ListadoPage());
   }

@@ -11,10 +11,12 @@ class FormularioPage extends StatefulWidget {
 
 class _FormularioPageState extends State<FormularioPage> {
   final idForm = GlobalKey<FormState>();
+  Map<String, dynamic>? tarea;
 
   Map<String, dynamic> nuevaTarea = {};
   @override
   Widget build(BuildContext context) {
+    tarea = ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
     return Scaffold(
       appBar: AppBar(
         title: const Text('Formulario'),
@@ -39,6 +41,7 @@ class _FormularioPageState extends State<FormularioPage> {
 
   _crearInputNombre() {
     return TextFormField(
+      initialValue: (tarea != null) ? tarea!['nombre'] : "",
       onSaved: (valor) {
         nuevaTarea['nombre'] = valor;
       },
@@ -54,6 +57,7 @@ class _FormularioPageState extends State<FormularioPage> {
         top: 20,
       ),
       child: TextFormField(
+        initialValue: (tarea != null) ? tarea!['descripcion'] : "",
         onSaved: (valor) {
           nuevaTarea['descripcion'] = valor;
         },
@@ -74,10 +78,17 @@ class _FormularioPageState extends State<FormularioPage> {
         onPressed: () {
           idForm.currentState?.save();
           nuevaTarea['estado'] = false;
-          TareasProvider().agregarTarea(nuevaTarea);
-          Navigator.popAndPushNamed(context, ListadoPage.nombrePagina);
+          if (tarea != null) {
+            TareasProvider().editarTarea(nuevaTarea, tarea!);
+            Navigator.popAndPushNamed(context, ListadoPage.nombrePagina);
+          } else {
+            TareasProvider().agregarTarea(nuevaTarea);
+            Navigator.popAndPushNamed(context, ListadoPage.nombrePagina);
+          }
         },
-        child: const Text('Crear Tarea'),
+        child: (tarea != null)
+            ? const Text('Editar Tarea')
+            : const Text('Crear Tarea'),
       ),
     );
   }
